@@ -18,6 +18,9 @@ app.engine('html', hbs.__express);
 // body parser for route matching
 app.use(express.bodyParser());
 
+// static folder
+app.use(express.static('bower_components'));
+
 // routes and listen
 app
     .get('/', function (req, res) {
@@ -31,13 +34,3 @@ app
 
 
 console.log('listening to port ' + options.port);
-
-//var http = require('http');
-
-//http.createServer(function (req, resp) {
-//    console.log('request received');
-//    resp.writeHead(200, { 'content-type': 'text/plain' });
-//    resp.end('ispentit received your request');
-//}).listen(8000);
-
-//console.log('ispentit is ready');

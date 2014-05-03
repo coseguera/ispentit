@@ -1,10 +1,10 @@
-var express = require('express');
-var hbs = require('hbs');
+var express = require('express'),
+    hbs = require('hbs'),
+    myauth = require('./models/auth'),
+    indexRoutes = require('./routes/home');
 
 // App options
-var options = {
-    port: 8000
-};
+var options = { port: 8000 };
 
 // Create the express app
 var app = express();
@@ -21,16 +21,16 @@ app.use(express.bodyParser());
 // static folder
 app.use(express.static('bower_components'));
 
-// routes and listen
-app
-    .get('/', function (req, res) {
-        res.render('index', { title: 'ISpentIt home' });
-    })
-    .get('/wack/:id', function (req, res) {
-        var id = req.params.id;
-        res.render('identifier', { title: 'Identifier', myId: id });
-    })
-    .listen(options.port);
+// Authentication
+var auth = express.basicAuth(function(user, pass, callback) {
+	var result = myauth.validate(user, pass);
+	callback(null, result);
+});
 
+// routes
+indexRoutes.setup(app);
+
+// listen
+app.listen(options.port);
 
 console.log('listening to port ' + options.port);

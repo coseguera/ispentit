@@ -1,36 +1,29 @@
 var routes = require('../../routes/home');
+var expressApp = require('../mocks/app4route');
 
 describe('home', function () {
-	var app, res;
+	var x; 
 
 	beforeEach(function () {
-		res = {
-			render: function () { }
-		};
-		app = {
-			get: function (route, callback) { 
-				callback(null, res); 
-				return this;
-			}
-		};
+		x = expressApp.app();
 	});
 
-	it('returns true', function () {
+	it('configures index and about', function () {
 		// arrange
-		spyOn(res, 'render');
-		spyOn(app, 'get').andCallThrough();
+		spyOn(x.res, 'render');
+		spyOn(x.app, 'get').andCallThrough();
 		
 		// act
-		var result = routes.setup(app);
+		var result = routes.setup(x.app);
 
 		// assert
-		expect(app.get).toHaveBeenCalledWith('/', jasmine.any(Function));
-		expect(res.render).toHaveBeenCalledWith('index', { 
+		expect(x.app.get).toHaveBeenCalledWith('/', jasmine.any(Function));
+		expect(x.res.render).toHaveBeenCalledWith('index', { 
 			title: jasmine.any(String), 
 			message: jasmine.any(String), 
 			page: { home: true } });
-		expect(app.get).toHaveBeenCalledWith('/about', jasmine.any(Function));
-		expect(res.render).toHaveBeenCalledWith('index', {
+		expect(x.app.get).toHaveBeenCalledWith('/about', jasmine.any(Function));
+		expect(x.res.render).toHaveBeenCalledWith('index', {
 			title: jasmine.any(String),
 			message: jasmine.any(String),
 			page: { about: true } });

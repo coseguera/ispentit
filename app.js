@@ -1,7 +1,8 @@
 var express = require('express'),
     hbs = require('hbs'),
     myauth = require('./models/auth'),
-    indexRoutes = require('./routes/home');
+    indexRoutes = require('./routes/home'),
+    apiTransactions = require('./routes/api/transactions');
 
 // App options
 var options = { port: 8000 };
@@ -19,6 +20,9 @@ var auth = express.basicAuth(function(user, pass, callback) {
 
 // routes
 indexRoutes.setup(app);
+
+// api routes
+apiTransactions.setup(app);
 
 // listen
 app.listen(options.port);

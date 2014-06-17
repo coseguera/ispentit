@@ -3,13 +3,15 @@ var mongoose = require('mongoose'),
     model = require('./mongo/transactionModel').Transaction(mongoose),
     crud = require('./mongo/transactionCRUD').crud(model);
 
-db.init(mongoose, 'mongodb://localhost/ispentit');
-db.open(function() {
-    console.log('conn open');
+exports.get = function(callback) {
+    db.init(mongoose, 'mongodb://localhost/ispentit');
+    db.open(function() {
+        console.log('conn open');
 
-    crud.get(function(err, items) {
-        if(err) return console.error(err);
-	console.log(items);
-	db.close();
+        crud.get(function(err, items) {
+            if(err) return console.error(err);
+	    callback(items);
+	    db.close();
+        });
     });
-});
+};

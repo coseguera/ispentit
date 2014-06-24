@@ -1,6 +1,12 @@
 var $form = $('#query'),
     url = '/api/transactions';
 
+ko.bindingHandlers.jqCalendar = {
+init: function(element) {
+          $(element).datepicker();
+      }
+};
+
 function Transaction(item, vm) { 
     var self = this;
     self.concept = ko.observable(item.concept);

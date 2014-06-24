@@ -1,7 +1,7 @@
 <h1>Transactions</h1>
 <form id="query" data-bind="submit: queryData">
-    <label for="from">From:</label><input name="from" type="text" />
-    <label for="to">To:</label><input name="to" type="text" />
+    <label for="from">From:</label><input name="from" type="text" data-bind="jqCalendar" />
+    <label for="to">To:</label><input name="to" type="text" data-bind="jqCalendar" />
     <label for="by">By:</label>
     <select name="by" data-bind="options: people, optionsValue: 'id', optionsText: 'name', optionsCaption: '--All--'">
     </select>

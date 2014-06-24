@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{title}}</title>
     <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    {{#each styles}}
+    <link href="{{this}}" rel="stylesheet"/>
+    {{/each}}
 </head>
 <body>
     <div class="container">

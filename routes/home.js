@@ -16,12 +16,12 @@ exports.setup = function(app) {
             title: 'iSpentIt Transactions',
             scripts: [
                 '/lib/knockout/dist/knockout.js',
-                '/lib/jquery-ui/ui/minified/jquery-ui.min.js',
+                '/lib/bootstrap-datepicker/js/bootstrap-datepicker.js',
                 '/lib/sammy/lib/sammy.js',
                 '/custom/js/transactions.js'
             ],
             styles: [
-                '/lib/jquery-ui/themes/base/minified/jquery-ui.min.css'
+                '/lib/bootstrap-datepicker/css/datepicker3.css'
             ]
         });
     });

@@ -12,7 +12,8 @@ var app = express(); // Create the express app
 app.set('view engine', 'html'); // accept *.html files as the type of files to use by handlebars
 app.engine('html', hbs.__express); // Set handlebars as the view engine
 app.use(express.bodyParser()); // body parser for route matching
-app.use(express.static('bower_components')); // static folder
+app.use('/lib', express.static('bower_components')); // bower folder
+app.use('/custom', express.static('statics')); // statics folder
 
 // db
 mongoose.connect('mongodb://localhost/ispentit');

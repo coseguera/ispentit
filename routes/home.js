@@ -10,5 +10,14 @@ exports.setup = function(app) {
 			title: 'iSpentIt About', 
 			message: 'About iSpentIt', 
 			page: { about: true } });
+	})
+	.get('/transactions', function (req, res) {
+		res.render('transactions', {
+			title: 'iSpentIt Transactions',
+			scripts: [
+				'/lib/knockout/dist/knockout.js',
+				'/lib/sammy/lib/sammy.js',
+				'/custom/js/transactions.js'
+			] });
 	});
 };

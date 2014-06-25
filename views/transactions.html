@@ -38,18 +38,16 @@
     	    <th>Amount</th>
     	    <th>Person</th>
     	    <th>Account</th>
-    	    <th>splitId</th>
     	</tr>
         </thead>
         <tbody data-bind="foreach: transactions">
-            <tr>
-    	    <td data-bind="text: formattedDate"></td>
-    	    <td data-bind="text: concept"></td>
-    	    <td data-bind="text: formattedAmount"></td>
-    	    <td data-bind="text: personName"></td>
-    	    <td data-bind="text: accountName"></td>
-    	    <td data-bind="text: isSplit"></td>
-    	</tr>
+                <tr data-bind="css: { info: isSplit(), success: !isSplit() && amount() > 0 }">
+        	    <td data-bind="text: formattedDate"></td>
+        	    <td data-bind="text: concept"></td>
+        	    <td data-bind="text: formattedAmount"></td>
+        	    <td data-bind="text: personName"></td>
+        	    <td data-bind="text: accountName"></td>
+        	</tr>
         </tbody>
     </table>
 </div>

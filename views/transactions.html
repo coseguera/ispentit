@@ -1,29 +1,33 @@
 <h1 class="page-header">Transactions</h1>
-<form id="query" class="container" data-bind="submit: queryData">
-    <div class="row">
-        <div class="col-md-5 col-sm-4">
+<form id="query" class="form-horizontal" role="form" data-bind="submit: queryTransactions">
+    <div class="form-group">
+        <label for="from" class="col-sm-1 control-label">From</label>
+        <div class="col-sm-5">
             <input name="from" type="text" class="form-control" 
                 placeholder="From" data-bind="jqCalendar" />
         </div>
-        <div class="col-md-5 col-sm-4">
+        <label for="to" class="col-sm-1 control-label">To</label>
+        <div class="col-sm-5">
             <input name="to" type="text" class="form-control" 
                 placeholder="To" data-bind="jqCalendar" />
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-5 col-sm-4">
+    <div class="form-group">
+        <label for="by" class="col-sm-1 control-label">By</label>
+        <div class="col-sm-5">
             <select name="by" class="form-control" 
-                data-bind="options: people, optionsValue: 'id', optionsText: 'name', optionsCaption: 'By'">
+                data-bind="options: people, optionsValue: 'id', optionsText: 'name', optionsCaption: '---All---'">
             </select>
         </div>
-        <div class="col-md-5 col-sm-4">
+        <label for="on" class="col-sm-1 control-label">On</label>
+        <div class="col-sm-5">
             <select name="on" class="form-control" 
-                data-bind="options: accounts, optionsValue: 'id', optionsText: 'name', optionsCaption: 'On'">
+                data-bind="options: accounts, optionsValue: 'id', optionsText: 'name', optionsCaption: '---All---'">
             </select>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-5 col-sm-4">
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-6">
             <input type="submit" value="Go" class="btn btn-primary btn-block" />
         </div>
     </div>
@@ -45,8 +49,14 @@
         	    <td data-bind="text: formattedDate"></td>
         	    <td data-bind="text: concept"></td>
         	    <td data-bind="text: formattedAmount"></td>
-        	    <td data-bind="text: personName"></td>
-        	    <td data-bind="text: accountName"></td>
+        	    <td> 
+                    <span data-bind="text: personName"></span>
+                    (<span data-bind="text: formattedPersonSummary"></span>)
+                </td>
+        	    <td>
+                    <span data-bind="text: accountName"></span>
+                    (<span data-bind="text: formattedAccountSummary"></span>)
+                </td>
         	</tr>
         </tbody>
     </table>

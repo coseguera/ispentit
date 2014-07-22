@@ -22,7 +22,8 @@ exports.setup = function(app) {
             ],
             styles: [
                 '/lib/bootstrap-datepicker/css/datepicker3.css'
-            ]
+            ],
+            page: { transactions: true }
         });
     });
 };

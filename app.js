@@ -3,7 +3,9 @@ var express = require('express'),
     mongoose = require('mongoose'),
     myauth = require('./models/auth'),
     indexRoutes = require('./routes/home'),
-    apiTransactions = require('./routes/api/transactions');
+    apiTransactions = require('./routes/api/transactions'),
+    apiPeople = require('./routes/api/people'),
+    apiAccounts = require('./routes/api/accounts');
 
 // App options
 var options = { port: 8000 };
@@ -28,6 +30,8 @@ indexRoutes.setup(app);
 
 // api routes
 apiTransactions.setup(app, mongoose);
+apiPeople.setup(app, mongoose);
+apiAccounts.setup(app, mongoose);
 
 // listen
 app.listen(options.port);

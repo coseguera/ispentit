@@ -9,3 +9,17 @@ exports.Transaction = function (mongoose) {
     });
     return mongoose.model('Transaction', transactionSchema);
 };
+exports.Person = function (mongoose) {
+    var personSchema = mongoose.Schema({
+        id: String,
+        name: String
+    });
+    return mongoose.model('Person', personSchema);
+};
+exports.Account = function (mongoose) {
+    var accountSchema = mongoose.Schema({
+        id: String,
+        name: String
+    });
+    return mongoose.model('Account', accountSchema);
+};

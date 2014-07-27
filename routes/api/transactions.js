@@ -1,47 +1,41 @@
-var url = require('url'),
-    models = require('../../models/mongoModels');
+var models = require('../../models/mongoModels');
 
-exports.setup = function (app, mongoose) {
+exports.setup = function (router, helper, mongoose) {
     var Transaction = models.Transaction(mongoose);
 
-    app.get('/api/transactions', function (req, res) {
-        var reqUrl = url.parse(req.url, true),
-            query = reqUrl.query,
-            find = Transaction.find();
+    router.use(helper.logRequest);
 
-        console.log(query);
+    router.route('/')
+        .get(function(req, res) {
+            var query = req.query,
+                find = Transaction.find(),
+                fromDate = queryDate(find, query),
+                result = {};
 
-        var fromDate = queryDate(find, query);
-        //queryBy(find, query);
-        //queryOn(find, query);
-
-        var result = {};
-
-        find.sort({ date: 1, splitId: 1 })
-        .exec(function(err, items) {
-            if(err) return console.error(err);
-
-            result.items = items;
-
-            aggregateQuery(fromDate, '$account', function (err, accountSummaries) {
-                if(err) return console.error(err);
-
-                result.accountSummaries = accountSummaries;
-
-                if(query.by) result.by = query.by;
-                if(query.on) result.on = query.on;
-
-                aggregateQuery(fromDate, '$person', function (err, personSummaries) {
-                    if(err) return console.error(err);
-
-                    result.personSummaries = personSummaries;
-
-                    res.json(result);
-                    
+            find.sort({ date: 1, splitId: 1 })
+            .exec(function(err, items) {
+                if(err) return helper.logAndSend500(err, res);
+    
+                result.items = items;
+    
+                aggregateQuery(fromDate, '$account', function (err, accountSummaries) {
+                    if(err) return helper.logAndSend500(err, res);
+    
+                    result.accountSummaries = accountSummaries;
+    
+                    if(query.by) result.by = query.by;
+                    if(query.on) result.on = query.on;
+    
+                    aggregateQuery(fromDate, '$person', function (err, personSummaries) {
+                        if(err) return helper.logAndSend500(err, res);
+    
+                        result.personSummaries = personSummaries;
+    
+                        res.json(result);
+                    });
                 });
             });
         });
-    });
 
     function queryDate(find, query) {
         var fromDate;
@@ -80,4 +74,6 @@ exports.setup = function (app, mongoose) {
             { $group: { _id: field, value: { $sum: '$amount' } } },
             callback);
     }
+
+    return router;
 };

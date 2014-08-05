@@ -3,7 +3,7 @@ exports.sendStatus = function(res, statusCode) {
 }
 
 exports.logAndSend500 = function(err, res) {
-    console.error(error);
+    console.error(err);
     res.status(500).send();
 }
     

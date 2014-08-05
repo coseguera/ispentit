@@ -35,6 +35,94 @@ exports.setup = function (router, helper, mongoose) {
                     });
                 });
             });
+        })
+        .post(function(req, res) {
+            var t = new Transaction();
+            t.date = req.body.date;
+            t.concept = req.body.concept;
+            t.amount = req.body.amount;
+            t.person = req.body.person;
+            t.account = req.body.account;
+
+            if(!t.date || !t.concept || !t.amount || !t.person || !t.account) 
+                return helper.sendStatus(res, 400);
+
+            t.amount = t.amount * 100;
+
+            t.save(function(err) {
+                if(err) return helper.logAndSend500(err, res);
+
+                res.json({ msg: 'Transaction created' });
+            });
+        });
+
+    router.route('/:id')
+        .get(function(req, res) {
+            var id = req.params.id;
+
+            if(!id || !mongoose.Types.ObjectId.isValid(id))
+                return helper.sendStatus(res, 400);
+            
+            Transaction.findById(id, function(err, transaction) {
+                if(err) return helper.logAndSend500(err, res);
+
+                if(!transaction) return helper.sendStatus(res, 404);
+
+                res.json(transaction);
+            });
+        })
+        .put(function(req, res) {
+            var id = req.params.id,
+                date = req.body.date,
+                concept = req.body.concept,
+                amount = req.body.amount,
+                person = req.body.person,
+                account = req.body.account;
+
+            if(!id 
+                || !mongoose.Types.ObjectId.isValid(id) 
+                || !date 
+                || !concept 
+                || !amount 
+                || !person 
+                || !account) 
+                return helper.sendStatus(res, 400);
+
+            Transaction.findById(id, function(err, transaction) {
+                if(err) return helper.logAndSend500(err, res);
+
+                if(!transaction) return helper.sendStatus(res, 404);
+
+                transaction.date = date;
+                transaction.concept = concept;
+                transaction.amount = amount;
+                transaction.person = person;
+                transaction.account = account;
+
+                transaction.save(function(err) {
+                    if(err) {
+                        if(err.name === 'CastError') return helper.sendStatus(res, 400);
+
+                        return helper.logAndSend500(err, res);
+                    }
+
+                    res.json({ msg: 'Transaction updated' });
+                });
+            });
+        })
+        .delete(function(req, res) {
+            var id = req.params.id;
+
+            if(!id || !mongoose.Types.ObjectId.isValid(id))
+                return helper.sendStatus(res, 400);
+
+            Transaction.findByIdAndRemove(id, function(err, result) {
+                if(err) return helper.logAndSend500(err, res);
+
+                if(!result) return helper.sendStatus(res, 404);
+
+                res.json({ msg: 'Transaction removed' });
+            });
         });
 
     function queryDate(find, query) {

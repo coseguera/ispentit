@@ -43,6 +43,9 @@ exports.setup = function (router, helper, mongoose) {
             t.amount = req.body.amount;
             t.person = req.body.person;
             t.account = req.body.account;
+            
+            var splitId = req.body.splitId;
+            if(splitId) t.splitId = splitId;
 
             if(!t.date || !t.concept || !t.amount || !t.person || !t.account) 
                 return helper.sendStatus(res, 400);

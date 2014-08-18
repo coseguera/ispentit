@@ -50,6 +50,8 @@ exports.setup = function (router, helper, mongoose) {
             if(!t.date || !t.concept || !t.amount || !t.person || !t.account) 
                 return helper.sendStatus(res, 400);
 
+            t.date.setDate(t.date.getDate() + 1);
+
             t.amount = t.amount * 100;
 
             t.save(function(err) {

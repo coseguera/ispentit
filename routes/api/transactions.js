@@ -1,3 +1,5 @@
+'use strict';
+
 var models = require('../../models/mongoModels');
 
 exports.setup = function (router, helper, mongoose) {
@@ -14,20 +16,20 @@ exports.setup = function (router, helper, mongoose) {
 
             find.sort({ date: 1, splitId: 1 })
             .exec(function(err, items) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
     
                 result.items = items;
     
                 aggregateQuery(fromDate, '$account', function (err, accountSummaries) {
-                    if(err) return helper.logAndSend500(err, res);
+                    if(err) { return helper.logAndSend500(err, res); }
     
                     result.accountSummaries = accountSummaries;
     
-                    if(query.by) result.by = query.by;
-                    if(query.on) result.on = query.on;
+                    if(query.by) { result.by = query.by; }
+                    if(query.on) { result.on = query.on; }
     
                     aggregateQuery(fromDate, '$person', function (err, personSummaries) {
-                        if(err) return helper.logAndSend500(err, res);
+                        if(err) { return helper.logAndSend500(err, res); }
     
                         result.personSummaries = personSummaries;
     
@@ -45,17 +47,18 @@ exports.setup = function (router, helper, mongoose) {
             t.account = req.body.account;
             
             var splitId = req.body.splitId;
-            if(splitId) t.splitId = splitId;
+            if(splitId) { t.splitId = splitId; }
 
-            if(!t.date || !t.concept || !t.amount || !t.person || !t.account) 
+            if(!t.date || !t.concept || !t.amount || !t.person || !t.account) {
                 return helper.sendStatus(res, 400);
+            }
 
             t.date.setDate(t.date.getDate() + 1);
 
             t.amount = t.amount * 100;
 
             t.save(function(err) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
                 res.json({ msg: 'Transaction created' });
             });
@@ -65,13 +68,14 @@ exports.setup = function (router, helper, mongoose) {
         .get(function(req, res) {
             var id = req.params.id;
 
-            if(!id || !mongoose.Types.ObjectId.isValid(id))
+            if(!id || !mongoose.Types.ObjectId.isValid(id)) {
                 return helper.sendStatus(res, 400);
+            }
             
             Transaction.findById(id, function(err, transaction) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
-                if(!transaction) return helper.sendStatus(res, 404);
+                if(!transaction) { return helper.sendStatus(res, 404); }
 
                 res.json(transaction);
             });
@@ -84,19 +88,20 @@ exports.setup = function (router, helper, mongoose) {
                 person = req.body.person,
                 account = req.body.account;
 
-            if(!id 
-                || !mongoose.Types.ObjectId.isValid(id) 
-                || !date 
-                || !concept 
-                || !amount 
-                || !person 
-                || !account) 
+            if(!id || 
+                !mongoose.Types.ObjectId.isValid(id) ||
+                !date ||
+                !concept ||
+                !amount ||
+                !person ||
+                !account) {
                 return helper.sendStatus(res, 400);
+            }
 
             Transaction.findById(id, function(err, transaction) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
-                if(!transaction) return helper.sendStatus(res, 404);
+                if(!transaction) { return helper.sendStatus(res, 404); }
 
                 transaction.date = date;
                 transaction.concept = concept;
@@ -106,7 +111,7 @@ exports.setup = function (router, helper, mongoose) {
 
                 transaction.save(function(err) {
                     if(err) {
-                        if(err.name === 'CastError') return helper.sendStatus(res, 400);
+                        if(err.name === 'CastError') { return helper.sendStatus(res, 400); }
 
                         return helper.logAndSend500(err, res);
                     }
@@ -118,13 +123,14 @@ exports.setup = function (router, helper, mongoose) {
         .delete(function(req, res) {
             var id = req.params.id;
 
-            if(!id || !mongoose.Types.ObjectId.isValid(id))
+            if(!id || !mongoose.Types.ObjectId.isValid(id)) {
                 return helper.sendStatus(res, 400);
+            }
 
             Transaction.findByIdAndRemove(id, function(err, result) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
-                if(!result) return helper.sendStatus(res, 404);
+                if(!result) { return helper.sendStatus(res, 404); }
 
                 res.json({ msg: 'Transaction removed' });
             });
@@ -139,7 +145,7 @@ exports.setup = function (router, helper, mongoose) {
                 find.where('date').gt(fromDate);
             }
 
-            if(query.to) find.where('date').lte(addDays(query.to, 1));
+            if(query.to) { find.where('date').lte(addDays(query.to, 1)); }
         } else {
             fromDate = addDays(null, -15);
             find.where('date').gt(fromDate);
@@ -147,13 +153,13 @@ exports.setup = function (router, helper, mongoose) {
         return fromDate;
     }
 
-    function queryBy(find, query) {
-        if(query.by) find.where('person').equals(query.by);
-    }
+    //function queryBy(find, query) {
+    //    if(query.by) { find.where('person').equals(query.by); }
+    //}
 
-    function queryOn(find, query) {
-        if(query.on) find.where('account').equals(query.on);
-    }
+    //function queryOn(find, query) {
+    //    if(query.on) { find.where('account').equals(query.on); }
+    //}
 
     function addDays(dateStr, days) {
         var date = dateStr ? new Date(dateStr) : new Date();

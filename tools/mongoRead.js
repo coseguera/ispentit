@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose'),
     tranModel = require('./../models/transaction');
 
@@ -9,7 +11,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log('conn open');
     Transaction.find(function (err, items) {
-	if(err) return console.error(err);
+	if(err) { return console.error(err); }
 
 	console.log(items);
 	db.close();

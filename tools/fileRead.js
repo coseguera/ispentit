@@ -1,10 +1,12 @@
+'use strict';
+
 var fs = require('fs'),
     mongoose = require('mongoose'),
-    uuid = require('uuid-lib'),
+    uuid = require('uuid-lib'), // ToDo: install node-uuid
     path = __dirname + '/expenses.txt';
 
 fs.readFile(path, 'utf8', function(err, data) {
-	if(err) console.log(err);
+	if(err) { console.log(err); }
 
 	var result = data.split('\n'),
 	    splitIds = {};
@@ -27,7 +29,7 @@ fs.readFile(path, 'utf8', function(err, data) {
 		console.log('conn open');
 
 		for(var i = 0, len = result.length; i < len; i++) {
-			if (!result[i]) continue;
+			if (!result[i]) { continue; }
 
 			var item = JSON.parse(result[i]);
 			if(item.splitId) {
@@ -41,13 +43,15 @@ fs.readFile(path, 'utf8', function(err, data) {
 		
 			var dbItem = new Transaction(item);
 
-			dbItem.save(function (err, errItem) {
-				if(err) return console.error(err);
-			});
-		};
+			dbItem.save(onErrorSave);
+		}
+
+        function onErrorSave (err) {
+            if(err) { return console.error(err); }
+        }
 
 		Transaction.find(function (err, items) {
-			if(err) return console.error(err);
+			if(err) { return console.error(err); }
 
 			console.log(items);
 		});

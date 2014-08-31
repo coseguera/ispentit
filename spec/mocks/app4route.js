@@ -1,3 +1,5 @@
+'use strict';
+
 exports.app = function () {
 	var res = { render: function () { } };
 	var app = {

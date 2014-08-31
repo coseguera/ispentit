@@ -1,3 +1,5 @@
+'use strict';
+
 var models = require('../../models/mongoModels');
 
 exports.setup = function (router, helper, mongoose) {
@@ -8,7 +10,7 @@ exports.setup = function (router, helper, mongoose) {
     router.route('/')
         .get(function(req, res) {
             Person.find(function(err, people) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
                 res.json(people);
             });
@@ -18,10 +20,10 @@ exports.setup = function (router, helper, mongoose) {
             person.id = req.body.id;
             person.name = req.body.name;
 
-            if (!person.id || !person.name) return helper.sendStatus(res, 400);
+            if (!person.id || !person.name) { return helper.sendStatus(res, 400); }
 
             person.save(function(err) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
                 res.json({ msg: 'Person created' });
             });
@@ -30,9 +32,9 @@ exports.setup = function (router, helper, mongoose) {
     router.route('/:id')
         .get(function(req, res) {
             Person.findOne({ id: req.params.id }, function(err, person) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
-                if(!person) return helper.sendStatus(res, 404);
+                if(!person) { return helper.sendStatus(res, 404); }
 
                 res.json(person);
             });
@@ -41,17 +43,17 @@ exports.setup = function (router, helper, mongoose) {
             var id = req.params.id,
                 name = req.body.name;
 
-            if (!id || !name) return helper.sendStatus(res, 400);
+            if (!id || !name) { return helper.sendStatus(res, 400); }
 
             Person.findOne({ id: id }, function(err, person) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
-                if(!person) return helper.sendStatus(res, 404);
+                if(!person) { return helper.sendStatus(res, 404); }
 
                 person.name = name;
 
                 person.save(function(err) {
-                    if(err) return helper.logAndSend500(err, res);
+                    if(err) { return helper.logAndSend500(err, res); }
 
                     res.json({ msg: 'Person updated' });
                 });
@@ -60,12 +62,12 @@ exports.setup = function (router, helper, mongoose) {
         .delete(function(req, res) {
             var id = req.params.id;
 
-            if(!id) return helper.sendStatus(res, 400);
+            if(!id) { return helper.sendStatus(res, 400); }
 
             Person.findOneAndRemove({ id: id }, function(err, result) {
-                if(err) return helper.logAndSend500(err, res);
+                if(err) { return helper.logAndSend500(err, res); }
 
-                if(!result) return helper.sendStatus(res, 404);
+                if(!result) { return helper.sendStatus(res, 404); }
 
                 res.json({ msg: 'Person removed' });
             });

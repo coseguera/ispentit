@@ -1,3 +1,5 @@
+'use strict';
+
 exports.setup = function (router) {
     router.get('/', function (req, res) {
         res.render('transactions', {

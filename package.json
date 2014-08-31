@@ -3,11 +3,14 @@
     "main": "app.js",
 	"description": "node app for my expenses",
 	"version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/coseguera/ispentit.git"
+    },
 	"dependencies": {
 		"express": "4.6.x",
         "body-parser": "1.5.x",
 		"mongoose": "*",
-		"hbs": "*",
-		"uuid-lib": "*"
+		"hbs": "*"
 	}
 }

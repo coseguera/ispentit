@@ -1,3 +1,5 @@
+'use strict';
+
 var auth = require('../../models/auth');
 
 describe('validate', function () {

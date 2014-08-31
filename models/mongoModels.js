@@ -1,3 +1,5 @@
+'use strict';
+
 exports.Transaction = function (mongoose) {
     var transactionSchema = mongoose.Schema({
         date: Date,
